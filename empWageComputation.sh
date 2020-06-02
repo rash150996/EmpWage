@@ -6,32 +6,40 @@ PWORKING_HOUR=4
 NUM_WORKING_MONTH=20
 IsFullTime=1
 IsPartTime=0
-isPresent=$(( RANDOM % 2 ))
-if [ $isPresent -eq 1 ]
-then
-	echo "the employee is present"
-	work=$(( RANDOM % 2 ))
-	case $work in
+MAX_HRS_IN_MONTH=100
+NUM_WORKING_DAYS=20
+
+totalEmpHrs=0;
+totalWorkingDays=0;
+
+while [[ $totalEmpHrs -lt $MAX_HRS_IN_MONTH && $totalWorkingDays -lt $NUM_WORKING_DAYS ]]
+do
+	(( totalWorkingDays++ ))
+	isPresent=$(( RANDOM % 2 ))
+	if [ $isPresent -eq 1 ]
+	then
+		echo "the employee is present"
+		work=$(( RANDOM % 2 ))
+		case $work in
 			$IsFullTime)
 				echo "The employee is a full time employee"
-				dailyWage=$(( $WAGE_PER_HOURS * $WORKING_HOURS ))
-				echo "Daily wage = $dailyWage"
-				monthlyWage=$(( $dailyWage * $NUM_WORKING_MONTH ))
-            echo "Monthly wage would be = $monthlyWage"
+				empHrs=8
+				totalEmpHrs=$(( $totalEmpHrs + $empHrs ))
 				;;
+
          $IsPartTime)
             echo "The employee is a part time employee"
-            pdailyWage=$(( $WAGE_PER_HOURS * $PWORKING_HOUR ))
-            echo "Daily wage = $pdailyWage"
-				pmonthlyWage=$(( $pdailyWage * $NUM_WORKING_MONTH ))
-            echo "Monthly wage would be = $pmonthlyWage"
-
+				empHrs=4
+				totalEmpHrs=$(( $totalEmpHrs + $empHrs ))
 				;;
 			*)
 				echo "error"
 				;;
-	esac
-elif [ $isPresent -eq 0 ]
-then
-   echo "Absent"
-fi
+		esac
+	elif [ $isPresent -eq 0 ]
+	then
+   	echo "Absent"
+	fi
+done
+totalSalary=$(($totalEmpHrs*$WAGE_PER_HOURS))
+
