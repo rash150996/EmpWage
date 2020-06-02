@@ -12,10 +12,9 @@ totalWorkingDays=0;
 totalsalary=0
 dailywage=0
 
-declare -a dailyWage
-declare -a totalSalary
 
-function getWorkHrs(){
+function getWorkHrs()
+{
 local empCheck=$1
 case $empCheck in
   $IS_FULL_TIME)
@@ -44,6 +43,8 @@ done
 
 echo ${dailyWage[@]}
 echo ${totalSalary[@]}
-
-
+for (( i=1; i<= ${#dailyWage[@]}; i++ ))
+do
+	echo "Day"$i			${dailyWage[$i]}			${totalSalary[$i]} 
+done | column -t
 
